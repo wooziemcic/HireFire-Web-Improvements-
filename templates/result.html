@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Interview Results</h4>
+        
+        <h5>Your Answers:</h5>
+        <p>{{ transcription }}</p>
+
+        <h5>Scores:</h5>
+        <ul class="list-group">
+            <li class="list-group-item">Confidence Score: {{ confidence_score }}</li>
+            <li class="list-group-item">NLP Score: 
+                {% if nlp_score > 0 %}
+                    {{ nlp_score }}
+                {% else %}
+                    Not applicable (no valid speech detected).
+                {% endif %}
+            </li>
+            <li class="list-group-item">Final Score: {{ final_score }}</li>
+        </ul>
+
+        <h5>Status:</h5>
+        <p><strong>{{ status }}</strong></p>
+    </div>
+</div>
+{% endblock %}

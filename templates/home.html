@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card shadow-lg border-0">
+    <div class="card-body">
+        <h2 class="card-title text-center mb-4">Post a Job Description</h2>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="job_description" class="form-label">
+                    <i class="fas fa-briefcase mr-2"></i> Job Description:
+                </label>
+                <textarea 
+                    name="job_description" 
+                    rows="6" 
+                    class="form-control fancy-textarea" 
+                    placeholder="Enter job description..." 
+                    required></textarea>
+            </div>
+
+            <div class="form-group mt-4">
+                <label for="resume" class="form-label">
+                    <i class="fas fa-file-upload mr-2"></i> Upload Resume (PDF only):
+                </label>
+                <div class="custom-file">
+                    <input 
+                        type="file" 
+                        name="resume" 
+                        class="custom-file-input" 
+                        id="resume" 
+                        accept=".pdf" 
+                        required>
+                    <label class="custom-file-label" for="resume">Choose file...</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-dark btn-block mt-4 fancy-button">
+                <i class="fas fa-paper-plane mr-2"></i> Submit Job
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Post a Job Description</h2>
+<form method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="job_description">Job Description:</label>
+        <textarea 
+            name="job_description" 
+            rows="5" 
+            cols="50" 
+            class="form-control" 
+            placeholder="Enter job description..." 
+            required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="resume">Upload Resume (PDF only):</label>
+        <input 
+            type="file" 
+            name="resume" 
+            accept=".pdf" 
+            class="form-control" 
+            required>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+</form>
+{% endblock %}

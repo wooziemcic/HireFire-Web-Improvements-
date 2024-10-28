@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card shadow-lg border-0">
+    <div class="card-body">
+        <h2 class="card-title text-center mb-4">Your Interview Questions</h2>
+        <ol class="list-group list-group-flush">
+            {% for question in questions %}
+                <li class="list-group-item bg-light border-bottom">
+                    <i class="fas fa-question-circle mr-2"></i>{{ question }}
+                </li>
+            {% endfor %}
+        </ol>
+    </div>
+</div>
+
+<div class="card shadow-lg border-0 mt-5">
+    <div class="card-body">
+        <h2 class="card-title text-center mb-4">Record Your Video Answer</h2>
+        <form method="POST" action="{{ url_for('record_answer', interview_id=interview_id) }}" enctype="multipart/form-data">
+            <div class="d-flex justify-content-center mb-3">
+                <button type="button" class="btn btn-outline-primary mr-3" onclick="startRecording()"> 
+                    <i class="fas fa-microphone mr-2"></i> Start Recording
+                </button>
+                <button type="button" class="btn btn-outline-danger" onclick="stopRecording()">
+                    <i class="fas fa-stop mr-2"></i> Stop Recording
+                </button>
+            </div>
+            <video id="videoPlayback" class="w-100 rounded border" controls></video>
+            <input type="hidden" name="video_data" id="videoData">
+            <button type="submit" class="btn btn-dark btn-block mt-3">
+                <i class="fas fa-upload mr-2"></i> Submit Video Answer
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+let mediaRecorder;
+let videoChunks = [];
+
+async function startRecording() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.ondataavailable = event => videoChunks.push(event.data);
+        mediaRecorder.onstop = async () => {
+            const videoBlob = new Blob(videoChunks, { type: 'video/webm' });
+            const videoUrl = URL.createObjectURL(videoBlob);
+            document.getElementById('videoPlayback').src = videoUrl;
+
+            const reader = new FileReader();
+            reader.readAsDataURL(videoBlob);
+            reader.onloadend = () => {
+                const base64Video = reader.result.split(",")[1];
+                document.getElementById('videoData').value = base64Video;
+            };
+        };
+        videoChunks = [];
+        mediaRecorder.start();
+    } catch (error) {
+        console.error("Error accessing camera:", error);
+        alert("Camera access denied or unavailable.");
+    }
+}
+
+function stopRecording() {
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+    }
+}
+</script>
+{% endblock %}
